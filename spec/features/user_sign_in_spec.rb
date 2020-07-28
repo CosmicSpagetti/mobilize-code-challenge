@@ -89,6 +89,7 @@ describe "user can" do
 
       expect(page).to have_content("Incorrect Username/Password Combination")
     end
+
     it "can fail to log in if name is wrong" do 
       user = User.create!(name: "Billy2", password: "123", phone_number: "1234567")
       visit root_path 
@@ -100,5 +101,37 @@ describe "user can" do
 
       expect(page).to have_content("Incorrect Username/Password Combination")
     end
+
+    it "can fail to log in if password is wrong" do 
+      user = User.create!(name: "Billy2", password: "123", phone_number: "1234567")
+      visit root_path 
+      click_on "Login"
+
+      fill_in "name", with: "Billy2"
+      fill_in "password", with: "12345"
+      click_on "Login"
+
+      expect(page).to have_content("Incorrect Username/Password Combination")
+    end
   end
+
+  describe "can sign out when signed in" do 
+    it "Logout" do 
+      user = User.create!(name: "Billy2", password: "123", phone_number: "1234567")
+      visit root_path 
+      click_on "Login"
+
+      fill_in "name", with: "Billy2"
+      fill_in "password", with: "123"
+      click_on "Login"
+
+      expect(current_path).to eq(root_path)
+      expect(page).to have_content("You are now logged in, #{user.name}")
+      
+      click_on "Logout"
+      expect(page).to have_content("You are logged out!")
+      expect(page).to have_button("Login")
+    end
+  end
+  
 end

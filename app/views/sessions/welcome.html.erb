@@ -5,5 +5,5 @@
 <% end %>
 
 <% if logged_in? %>
-  <%= button_to "Log out", '/sessions/logout', method: :get%>
+  <%= button_to "Logout", logout_path, method: :get%>
 <% end %>
