@@ -10,7 +10,7 @@ describe "user can" do
         fill_in "user[name]", with: "Billy"
         fill_in "user[password]",  with: "12345"
         fill_in "user[password_confirmation]", with: "12345"
-        fill_in "user[phone_number]", with: "1234567"
+        fill_in "user[phone_number]", with: "1234567890"
         click_on "Submit"
 
         expect(current_path).to eq(root_path)
@@ -26,7 +26,7 @@ describe "user can" do
         
         fill_in "user[password]",  with: "12345"
         fill_in "user[password_confirmation]", with: "12345"
-        fill_in "user[phone_number]", with: "1234567"
+        fill_in "user[phone_number]", with: "1234567890"
         click_on "Submit"
 
         expect(page).to have_content("Name can't be blank")
@@ -58,7 +58,7 @@ describe "user can" do
         
 
         fill_in "user[name]", with: "Billy"
-        fill_in "user[phone_number]", with: "1234567"
+        fill_in "user[phone_number]", with: "1234567890"
         click_on "Submit"
 
         expect(page).to have_content("Password can't be blank")
@@ -67,7 +67,7 @@ describe "user can" do
 
   describe "sign in when they enter name and password if account exists" do 
     it "can sign in" do 
-      user = User.create!(name: "Billy2", password: "123", phone_number: "1234567")
+      user = User.create!(name: "Billy2", password: "123", phone_number: "1234567890")
       visit root_path 
       click_on "Login"
 
@@ -91,7 +91,7 @@ describe "user can" do
     end
 
     it "can fail to log in if name is wrong" do 
-      user = User.create!(name: "Billy2", password: "123", phone_number: "1234567")
+      user = User.create!(name: "Billy2", password: "123", phone_number: "1234567890")
       visit root_path 
       click_on "Login"
 
@@ -103,7 +103,7 @@ describe "user can" do
     end
 
     it "can fail to log in if password is wrong" do 
-      user = User.create!(name: "Billy2", password: "123", phone_number: "1234567")
+      user = User.create!(name: "Billy2", password: "123", phone_number: "1234567890")
       visit root_path 
       click_on "Login"
 
@@ -117,7 +117,7 @@ describe "user can" do
 
   describe "can sign out when signed in" do 
     it "Logout" do 
-      user = User.create!(name: "Billy2", password: "123", phone_number: "1234567")
+      user = User.create!(name: "Billy2", password: "123", phone_number: "1234567890")
       visit root_path 
       click_on "Login"
 
@@ -131,6 +131,22 @@ describe "user can" do
       click_on "Logout"
       expect(page).to have_content("You are logged out!")
       expect(page).to have_button("Login")
+    end
+  end
+
+  describe "can validate a real number was entered" do
+    it "fails if not a real number" do 
+      visit root_path
+      click_on "Sign Up"
+      expect(current_path).to eq(new_user_path)
+
+      fill_in "user[name]", with: "Billy"
+      fill_in "user[password]",  with: "12345"
+      fill_in "user[password_confirmation]", with: "12345"
+      fill_in "user[phone_number]", with: "not a number"
+      click_on "Submit"
+
+      expect(page).to have_content("Put a real number!")
     end
   end
   
