@@ -9,7 +9,8 @@ describe "user can create account" do
 
         fill_in "user[name]", with: "Billy!!"
         fill_in "user[password]",  with: "12345"
-        click_on "Create Account"
+        fill_in "user[password_confirmation]", with: "12345"
+        click_on "Submit"
 
         expect(page).to have_content("You are now logged in")
     end
