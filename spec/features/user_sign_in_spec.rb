@@ -1,10 +1,10 @@
 require "rails_helper"
 
-describe "user can sign in" do
+describe "user can create account" do
   describe "They fill in name password and phone number" do
-      it "signs them in " do
-        visit root
-
+      it "Creates account" do
+        visit root_path
+        click_on "Create Account"
         expect(current_path).to eq(new_user_path)
 
         fill_in "user[name]", with: "Billy!!"
